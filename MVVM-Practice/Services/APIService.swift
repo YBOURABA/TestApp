@@ -8,7 +8,7 @@
 import Foundation
 
 protocol APIServiceProtocol {
-  func fetchEmployeesData( completion : @escaping (_ success: Bool, _ employees: [Employee], _ error: APIError?) -> Void )
+  func fetchEmployeesData( completion : @escaping (Result<[Employee], APIError>) -> Void )
 }
 enum APIError: String, Error {
     case noNetwork = "No Network"
@@ -18,13 +18,13 @@ enum APIError: String, Error {
 
 class APIService: APIServiceProtocol {
     private let baseURL = URL(string: Constants.urlAPI)
-    func fetchEmployeesData(completion: @escaping (_ success: Bool, _ employees: [Employee], _ error: APIError?) -> Void) {
+    func fetchEmployeesData(completion: @escaping (Result<[Employee], APIError>) -> Void) {
         URLSession.shared.dataTask(with: baseURL!) { (data, _ urlResponse, _ error ) in
             if let data = data {
                 let jsonDecoder = JSONDecoder()
                 let employeData = try? jsonDecoder.decode(Employees.self, from: data)
                 if let employeData = employeData {
-                    completion(true, employeData.data, nil)
+                    completion(.success(employeData.data))
                 }
             }
         }.resume()

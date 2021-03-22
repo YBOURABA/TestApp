@@ -31,13 +31,14 @@ class EmployeeViewModel {
         self.apiService = apiService
     }
     func initFetchData() {
-        apiService.fetchEmployeesData { [weak self] (_, employees, error) in
+        apiService.fetchEmployeesData { [weak self] result in
             guard let self = self else {return}
-            guard error == nil else {
-                self.alertMessage = error?.rawValue
-                            return
-                        }
-            self.processFetchedEmployees(employees)
+            switch result {
+            case .success(let employees):
+                self.processFetchedEmployees(employees)
+            case .failure(let error):
+                self.alertMessage = error.rawValue
+            }
         }
     }
     func getCellViewModel( at indexPath: IndexPath ) -> EmployeeCellViewModel {
