@@ -1,0 +1,4 @@
+included:
+  - MVVM-Practice
+excluded:
+  - Pods
