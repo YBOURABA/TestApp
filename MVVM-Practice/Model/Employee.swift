@@ -12,13 +12,13 @@ struct Employees: Decodable {
 }
 
 struct Employee: Decodable {
-    let id: String
+    let identifiant: String
     let employeeName: String
     let employeeSalary: String
     let employeeAge: String
     let profileImage: String
     enum CodingKeys: String, CodingKey {
-        case id
+        case identifiant = "id"
         case employeeName = "employee_name"
         case employeeSalary = "employee_salary"
         case employeeAge = "employee_age"
